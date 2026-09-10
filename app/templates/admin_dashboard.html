@@ -6,6 +6,13 @@ Admin Dashboard - SocietySense
 
 {% block content %}
 
+<h3>Search Complaints</h3>
+
+<form hx-get="/pages/admin/search" hx-target="#admin-list" hx-swap="innerHTML">
+    <input type="text" name="q" placeholder="e.g. show open plumbing complaints" style="width: 300px;">
+    <button type="submit">Search</button>
+</form>
+
 <h3>All Complaints</h3>
 
 <div id="admin-list">

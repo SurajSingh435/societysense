@@ -13,10 +13,11 @@ from jose import JWTError, jwt
 from app.core.config import settings
 from app.core.templates import templates
 from app.models.user import User, UserRole
-from app.models.complaint import ComplaintStatus
+from app.models.complaint import ComplaintStatus, Complaint
 from app.services.auth_service import verify_password, create_access_token
 from app.schemas.complaint import ComplaintCreate
 from app.services import complaint_service
+from app.services.search_service import parse_search_query, build_query
 
 
 router = APIRouter(prefix="/pages", tags=["pages"])
@@ -179,7 +180,6 @@ async def submit_complaint(
     )
 
 
-
 @router.get("/logout")
 async def logout():
     response = RedirectResponse(
@@ -190,7 +190,6 @@ async def logout():
     response.delete_cookie("access_token")
 
     return response
-
 
 
 @router.patch(
@@ -232,3 +231,28 @@ async def change_status_page(
     return HTMLResponse(
         content=render_complaint_card(complaint)
     )
+
+
+@router.get("/admin/search", response_class=HTMLResponse)
+async def admin_search_page(request: Request, q: str = ""):
+    user = await get_current_user_from_cookie(request)
+
+    if not user or user.role != UserRole.admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required",
+        )
+
+    if not q.strip():
+        complaints = await complaint_service.get_all_complaints()
+    else:
+        parsed = await parse_search_query(q)
+        query = build_query(parsed)
+        complaints = await Complaint.find(query).to_list()
+
+    cards_html = "".join(render_complaint_card(c) for c in complaints)
+
+    if not cards_html:
+        cards_html = "<p>No complaints found.</p>"
+
+    return HTMLResponse(content=cards_html)
