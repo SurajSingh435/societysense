@@ -84,17 +84,16 @@ Then hit `localhost:8000/pages/login`.
 
 MONGODB_URL, MONGODB_DB_NAME, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, GROQ_API_KEY, GROQ_BASE_URL, LLM_MODEL, EMBEDDING_API_KEY, EMBEDDING_MODEL, DUPLICATE_SIMILARITY_THRESHOLD
 
-## What I'd change given more time
+## Improvements
+Loading state during AI processing — Complaint submit/search ke time spinner ya loading message show karna, because LLM/embedding API response mein thoda time lag sakta hai.
+Reset form after successful submission — Complaint successfully submit hone ke baad category/description fields automatically clear karna.
+Improve overall UI/UX — Dashboard, complaint cards, spacing, responsiveness, loading/error/success feedback ko more polished banana.
+Resident self-registration — Residents ko khud account create karne ka option dena.
+Restricted admin account creation — Public admin registration na dena; admin accounts controlled/authorized process se hi create hon.
+Better date/time formatting — Raw timestamps ki jagah readable date/time display karna.
+Newest complaints first — Complaints ko created_at descending order mein sort karna so latest complaint top par aaye.
+Scientifically tune the 0.85 duplicate threshold — Labeled duplicate/non-duplicate complaint pairs bana kar different thresholds ko precision, recall aur F1-score se evaluate karna instead of relying mainly on manual testing.
 
-Honestly the similarity threshold is the thing bugging me most. 0.85 works fine on the handful of test complaints I tried but I picked it mostly by feel, submitting a few pairs and eyeballing whether the flag felt right. A proper version of this would have a labeled set of duplicate and non-duplicate pairs and actually measure precision and recall across a few threshold values before committing to one number.
-
-I'd also want admins to be able to confirm or reject a flagged duplicate instead of just seeing a flag with no way to respond to it. Storing that decision would give me real labeled data over time, which is exactly what's missing right now for tuning anything properly.
-
-The duplicate check itself only looks at text similarity, so two unrelated leaks in different towers can score high just because the sentences happen to read close. Adding something location-aware would fix a chunk of the false positives I noticed while testing, though I didn't have time to think through exactly how to weight that against the semantic score.
-
-Tests are basically nonexistent right now. I tested everything by hand through the Swagger docs and clicking through the actual browser pages, which worked for getting this done in time but is not something I'd want to keep doing past this point.
-
-Would also move duplicate detection over to MongoDB Atlas Vector Search eventually since Mongo already supports it natively, the Python loop version was just faster to get working without fighting index configuration on a deadline.
 
 ## One more thing
 
