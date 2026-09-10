@@ -85,14 +85,22 @@ Then hit `localhost:8000/pages/login`.
 MONGODB_URL, MONGODB_DB_NAME, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, GROQ_API_KEY, GROQ_BASE_URL, LLM_MODEL, EMBEDDING_API_KEY, EMBEDDING_MODEL, DUPLICATE_SIMILARITY_THRESHOLD
 
 ## Improvements
-Loading state during AI processing — Complaint submit/search ke time spinner ya loading message show karna, because LLM/embedding API response mein thoda time lag sakta hai.
-Reset form after successful submission — Complaint successfully submit hone ke baad category/description fields automatically clear karna.
-Improve overall UI/UX — Dashboard, complaint cards, spacing, responsiveness, loading/error/success feedback ko more polished banana.
-Resident self-registration — Residents ko khud account create karne ka option dena.
-Restricted admin account creation — Public admin registration na dena; admin accounts controlled/authorized process se hi create hon.
-Better date/time formatting — Raw timestamps ki jagah readable date/time display karna.
-Newest complaints first — Complaints ko created_at descending order mein sort karna so latest complaint top par aaye.
-Scientifically tune the 0.85 duplicate threshold — Labeled duplicate/non-duplicate complaint pairs bana kar different thresholds ko precision, recall aur F1-score se evaluate karna instead of relying mainly on manual testing.
+1. **Loading State During AI Processing** — Show a spinner or loading message while a complaint is being submitted or a search is being processed, since LLM and embedding API calls can take some time.
+
+2. **Reset Form After Successful Submission** — Automatically clear the category and description fields after a complaint has been successfully submitted.
+
+3. **Improve Overall UI/UX** — Further polish the dashboard, complaint cards, spacing, responsiveness, and loading/error/success feedback to provide a better user experience.
+
+4. **Resident Self-Registration** — Allow residents to create their own accounts instead of relying only on pre-created accounts.
+
+5. **Restricted Admin Account Creation** — Keep admin registration private and controlled rather than allowing anyone to create an admin account publicly.
+
+6. **Better Date and Time Formatting** — Display complaint timestamps in a more readable and user-friendly date/time format instead of raw timestamps.
+
+7. **Show Newest Complaints First** — Sort complaints by `created_at` in descending order so that the most recently submitted complaints appear at the top.
+
+8. **Scientifically Tune the 0.85 Duplicate Similarity Threshold** — Create a labeled dataset of duplicate and non-duplicate complaint pairs and evaluate different similarity thresholds using **precision, recall, and F1-score**, rather than relying mainly on manual testing.
+
 
 
 ## One more thing
