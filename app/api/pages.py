@@ -6,6 +6,8 @@ app/api/complaints.py). Browser pages read JWT from a cookie,
 while API clients can continue using Authorization headers.
 """
 
+import logging
+
 from fastapi import APIRouter, Request, Form, HTTPException, status
 from fastapi.responses import RedirectResponse, HTMLResponse
 from jose import JWTError, jwt
@@ -18,7 +20,6 @@ from app.services.auth_service import verify_password, create_access_token
 from app.schemas.complaint import ComplaintCreate
 from app.services import complaint_service
 from app.services.search_service import parse_search_query, build_query
-import logging
 
 
 router = APIRouter(prefix="/pages", tags=["pages"])
@@ -60,7 +61,7 @@ def render_complaint_card(c) -> str:
             f'</p>'
         )
 
-        return f"""
+    return f"""
     <div class="complaint-card" id="complaint-{c.id}">
         <strong>{c.ai_title or c.description}</strong>
         <p>
@@ -258,7 +259,10 @@ async def admin_search_page(request: Request, q: str = ""):
         try:
             cards_parts.append(render_complaint_card(c))
         except Exception:
-            logging.exception("Failed to render complaint card %s", getattr(c, "id", "unknown"))
+            logging.exception(
+                "Failed to render complaint card %s",
+                getattr(c, "id", "unknown"),
+            )
 
     cards_html = "".join(cards_parts)
 
