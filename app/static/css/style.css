@@ -1,0 +1,49 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+}
+
+nav {
+    background-color: #222;
+    padding: 15px 30px;
+}
+
+nav h2 {
+    color: white;
+    margin: 0;
+}
+
+main {
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+input,
+select,
+textarea {
+    padding: 10px;
+    margin: 8px 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+textarea {
+    min-height: 100px;
+    width: 100%;
+}
+
+button {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.complaint-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+}

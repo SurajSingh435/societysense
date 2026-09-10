@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin Dashboard - SocietySense
+{% endblock %}
+
+{% block content %}
+
+<h3>All Complaints</h3>
+
+<div id="admin-list">
+
+    {% if complaints %}
+
+        {% for c in complaints %}
+
+        <div class="complaint-card" id="complaint-{{ c.id }}">
+
+            <strong>
+                {{ c.ai_title or c.description }}
+            </strong>
+
+            <p>
+                Category: {{ c.category }} |
+                Urgency: {{ c.ai_urgency }}
+            </p>
+
+            <p>
+                Status: {{ c.status }}
+            </p>
+
+            {% if c.duplicate_of %}
+            <p class="duplicate-warning">
+                ⚠ Possible duplicate
+                (similarity: {{ "%.0f"|format((c.similarity_score or 0) * 100) }}%)
+            </p>
+            {% endif %}
+
+            <label for="status-{{ c.id }}">
+                Update Status:
+            </label>
+
+            <select
+                id="status-{{ c.id }}"
+                name="status"
+                hx-patch="/pages/complaints/{{ c.id }}/status"
+                hx-target="#complaint-{{ c.id }}"
+                hx-swap="outerHTML"
+            >
+                <option
+                    value="open"
+                    {% if c.status == "open" %}selected{% endif %}
+                >
+                    Open
+                </option>
+
+                <option
+                    value="in_progress"
+                    {% if c.status == "in_progress" %}selected{% endif %}
+                >
+                    In Progress
+                </option>
+
+                <option
+                    value="resolved"
+                    {% if c.status == "resolved" %}selected{% endif %}
+                >
+                    Resolved
+                </option>
+            </select>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No complaints found.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
