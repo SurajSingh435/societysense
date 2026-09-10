@@ -59,12 +59,12 @@ def render_complaint_card(c) -> str:
             f'</p>'
         )
 
-    return f"""
+        return f"""
     <div class="complaint-card" id="complaint-{c.id}">
         <strong>{c.ai_title or c.description}</strong>
         <p>
-            Category: {c.category} |
-            Status: {c.status} |
+            Category: {c.category.value} |
+            Status: {c.status.value} |
             Urgency: {c.ai_urgency}
         </p>
         {duplicate_html}
