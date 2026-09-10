@@ -18,6 +18,7 @@ from app.services.auth_service import verify_password, create_access_token
 from app.schemas.complaint import ComplaintCreate
 from app.services import complaint_service
 from app.services.search_service import parse_search_query, build_query
+import logging
 
 
 router = APIRouter(prefix="/pages", tags=["pages"])
@@ -250,7 +251,16 @@ async def admin_search_page(request: Request, q: str = ""):
         query = build_query(parsed)
         complaints = await Complaint.find(query).to_list()
 
-    cards_html = "".join(render_complaint_card(c) for c in complaints)
+    cards_parts = []
+    for c in complaints:
+        if c is None:
+            continue
+        try:
+            cards_parts.append(render_complaint_card(c))
+        except Exception:
+            logging.exception("Failed to render complaint card %s", getattr(c, "id", "unknown"))
+
+    cards_html = "".join(cards_parts)
 
     if not cards_html:
         cards_html = "<p>No complaints found.</p>"
